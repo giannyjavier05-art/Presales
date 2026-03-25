@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Propuesta BJungle SAS — Sistema de Gestión Integral</title>
+<style>
+  @media print {
+    .slide { page-break-after: always; }
+    .no-print { display: none; }
+    body { background: white; }
+    .disclaimer { page-break-before: always; }
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', Arial, sans-serif; background: #f0f0f0; color: #1a1a1a; }
+  .controls { position: sticky; top: 0; z-index: 99; background: #1a1a1a; padding: 10px 24px; display: flex; align-items: center; gap: 16px; }
+  .controls span { color: #aaa; font-size: 13px; }
+  .btn { padding: 7px 18px; border-radius: 6px; font-size: 13px; font-weight: 500; cursor: pointer; border: none; }
+  .btn-print { background: #378ADD; color: #fff; }
+  .btn-print:hover { background: #185FA5; }
+  .deck { max-width: 960px; margin: 0 auto; padding: 24px 16px; display: flex; flex-direction: column; gap: 20px; }
+  .slide { background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,.08); min-height: 480px; display: flex; flex-direction: column; }
+
+  .cover { background: #042C53; min-height: 480px; justify-content: center; padding: 60px 64px; }
+  .cover .tag { background: #378ADD; color: #fff; font-size: 11px; font-weight: 600; padding: 4px 12px; border-radius: 20px; display: inline-block; margin-bottom: 24px; letter-spacing: .5px; text-transform: uppercase; }
+  .cover h1 { font-size: 32px; font-weight: 600; color: #fff; line-height: 1.25; margin-bottom: 12px; }
+  .cover p { font-size: 14px; color: #85B7EB; line-height: 1.6; max-width: 560px; }
+  .cover .meta { margin-top: 36px; display: flex; gap: 28px; flex-wrap: wrap; }
+  .cover .meta-item .lbl { font-size: 11px; color: #85B7EB; text-transform: uppercase; letter-spacing: .5px; }
+  .cover .meta-item .val { font-size: 16px; font-weight: 600; color: #fff; margin-top: 3px; }
+
+  .roles-bar { background: #0C447C; padding: 14px 64px; display: flex; gap: 0; align-items: center; flex-wrap: wrap; }
+  .role-item { flex: 1; min-width: 160px; }
+  .role-item .rlbl { font-size: 10px; color: #85B7EB; text-transform: uppercase; letter-spacing: .6px; }
+  .role-item .rval { font-size: 13px; font-weight: 600; color: #fff; margin-top: 2px; }
+  .role-sep { width: 1px; background: rgba(255,255,255,.2); height: 32px; margin: 0 20px; flex-shrink: 0; }
+
+  .slide-header { padding: 28px 40px 16px; border-bottom: 1px solid #f0f0f0; }
+  .slide-header .num { font-size: 11px; font-weight: 600; color: #85B7EB; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
+  .slide-header h2 { font-size: 22px; font-weight: 600; color: #042C53; }
+  .slide-header p { font-size: 13px; color: #666; margin-top: 4px; }
+  .slide-body { padding: 24px 40px 32px; flex: 1; }
+
+  .kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 20px; }
+  .kpi { background: #f7f9fc; border-radius: 10px; padding: 14px; border: 1px solid #e8edf5; }
+  .kpi .k-val { font-size: 20px; font-weight: 700; color: #042C53; line-height: 1; }
+  .kpi .k-lbl { font-size: 11px; color: #666; margin-top: 5px; line-height: 1.3; }
+
+  .roles-info { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; margin-bottom: 20px; }
+  .role-card { border-radius: 10px; padding: 14px 16px; border: 1px solid; }
+  .rc-blue { background: #E6F1FB; border-color: #85B7EB; }
+  .rc-purple { background: #EEEDFE; border-color: #AFA9EC; }
+  .rc-teal { background: #E1F5EE; border-color: #5DCAA5; }
+  .role-card .rct { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; margin-bottom: 4px; }
+  .rc-blue .rct { color: #185FA5; } .rc-purple .rct { color: #534AB7; } .rc-teal .rct { color: #0F6E56; }
+  .role-card .rcn { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+  .rc-blue .rcn { color: #042C53; } .rc-purple .rcn { color: #26215C; } .rc-teal .rcn { color: #085041; }
+  .role-card .rcd { font-size: 12px; line-height: 1.4; }
+  .rc-blue .rcd { color: #185FA5; } .rc-purple .rcd { color: #534AB7; } .rc-teal .rcd { color: #0F6E56; }
+
+  table { width: 100%; border-collapse: collapse; font-size: 12px; margin-top: 8px; }
+  th { background: #f0f4fa; color: #042C53; font-weight: 600; text-align: left; padding: 8px 10px; font-size: 11px; text-transform: uppercase; letter-spacing: .3px; }
+  th.r, td.r { text-align: right; }
+  td { padding: 8px 10px; border-bottom: 1px solid #f0f0f0; color: #333; vertical-align: middle; line-height: 1.4; }
+  tr:last-child td { border-bottom: none; }
+  .sub-row td { background: #f7f9fc; font-weight: 600; color: #042C53; }
+  .meka-row td { background: #EEEDFE; font-weight: 600; color: #3C3489; }
+  .grand-row td { background: #042C53; font-weight: 700; color: #fff; font-size: 13px; }
+  .section-row td { background: #f0f4fa; font-weight: 700; color: #042C53; font-size: 11px; text-transform: uppercase; letter-spacing: .3px; padding: 6px 10px; }
+  .meka-scope td { background: #EEEDFE; color: #3C3489; font-style: italic; }
+
+  .pill { display: inline-block; font-size: 11px; padding: 2px 7px; border-radius: 5px; font-weight: 600; white-space: nowrap; }
+  .p-blue{background:#E6F1FB;color:#0C447C} .p-green{background:#EAF3DE;color:#27500A}
+  .p-red{background:#FCEBEB;color:#791F1F} .p-amber{background:#FAEEDA;color:#633806}
+  .p-purple{background:#EEEDFE;color:#3C3489} .p-gray{background:#f0f0f0;color:#444}
+  .p-teal{background:#E1F5EE;color:#085041}
+
+  .phase-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+  .phase-card { border-radius: 10px; padding: 16px; border: 1px solid; }
+  .ph1c{background:#E6F1FB;border-color:#85B7EB} .ph2c{background:#EAF3DE;border-color:#97C459}
+  .ph3c{background:#FCEBEB;border-color:#F09595} .ph4c{background:#EEEDFE;border-color:#AFA9EC}
+  .phase-card .pname { font-size: 13px; font-weight: 700; margin-bottom: 3px; }
+  .ph1c .pname{color:#0C447C} .ph2c .pname{color:#27500A} .ph3c .pname{color:#791F1F} .ph4c .pname{color:#3C3489}
+  .phase-card .pmeta { font-size: 11px; margin-bottom: 6px; }
+  .ph1c .pmeta{color:#185FA5} .ph2c .pmeta{color:#3B6D11} .ph3c .pmeta{color:#A32D2D} .ph4c .pmeta{color:#534AB7}
+  .phase-card .pcost { font-size: 14px; font-weight: 700; margin-bottom: 2px; }
+  .phase-card .pmeka { font-size: 12px; font-weight: 600; color: #534AB7; margin-bottom: 2px; }
+  .phase-card .ptotal { font-size: 12px; font-weight: 700; margin-bottom: 8px; }
+  .ph1c .pcost{color:#042C53} .ph2c .pcost{color:#27500A} .ph3c .pcost{color:#791F1F} .ph4c .pcost{color:#3C3489}
+  .ph1c .ptotal{color:#042C53} .ph2c .ptotal{color:#27500A} .ph3c .ptotal{color:#791F1F} .ph4c .ptotal{color:#3C3489}
+  .phase-card ul { padding-left: 15px; }
+  .phase-card li { font-size: 12px; color: #444; padding: 2px 0; line-height: 1.4; }
+
+  .timeline { margin: 14px 0; }
+  .tl-bar { display: flex; height: 10px; border-radius: 5px; overflow: hidden; margin-bottom: 6px; }
+  .tl1{background:#378ADD;flex:4} .tl2{background:#639922;flex:4.5} .tl3{background:#E24B4A;flex:4.5} .tl4{background:#7F77DD;flex:3}
+  .tl-labels { display: flex; font-size: 11px; color: #888; justify-content: space-between; }
+  .tl-legend { display: flex; gap: 18px; margin-top: 10px; flex-wrap: wrap; }
+  .tl-legend-item { display: flex; align-items: center; gap: 6px; font-size: 12px; color: #444; }
+  .tl-dot { width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; }
+
+  .ms-phase { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; padding: 7px 10px 3px; }
+
+  .bench-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 8px; }
+  .bench-card { border: 1px solid #e0e0e0; border-radius: 10px; overflow: hidden; }
+  .bench-card.best { border: 2px solid #378ADD; }
+  .bench-head { padding: 12px 14px 10px; border-bottom: 1px solid #f0f0f0; background: #fafafa; }
+  .bench-head .bname { font-size: 13px; font-weight: 700; color: #042C53; margin-bottom: 2px; }
+  .bench-head .bdesc { font-size: 11px; color: #888; }
+  .bench-head .bprice { font-size: 12px; font-weight: 600; color: #185FA5; margin-top: 5px; }
+  .bench-body { padding: 10px 14px; }
+  .bench-row { display: flex; justify-content: space-between; align-items: center; padding: 3px 0; border-bottom: 1px solid #f5f5f5; font-size: 12px; }
+  .bench-row:last-child { border-bottom: none; }
+  .dot-g{display:inline-block;width:10px;height:10px;border-radius:50%;background:#639922}
+  .dot-y{display:inline-block;width:10px;height:10px;border-radius:50%;background:#EF9F27}
+  .dot-r{display:inline-block;width:10px;height:10px;border-radius:50%;background:#ddd}
+  .bench-score { margin-top: 8px; }
+  .bench-score .slbl { display: flex; justify-content: space-between; font-size: 11px; color: #888; margin-bottom: 3px; }
+  .sbar { height: 5px; border-radius: 3px; background: #eee; overflow: hidden; }
+  .sfill { height: 100%; border-radius: 3px; }
+
+  .risk-badge{display:inline-block;font-size:11px;padding:3px 8px;border-radius:5px;font-weight:600;white-space:nowrap}
+  .rb-h{background:#FCEBEB;color:#791F1F} .rb-m{background:#FAEEDA;color:#633806} .rb-l{background:#EAF3DE;color:#27500A}
+
+  .rec-box{background:#E6F1FB;border:1px solid #85B7EB;border-radius:10px;padding:14px 18px;margin-top:14px}
+  .rec-box p{font-size:13px;color:#042C53;line-height:1.7}
+  .meka-box{background:#EEEDFE;border:1px solid #AFA9EC;border-radius:10px;padding:14px 18px;margin-top:10px}
+  .meka-box p{font-size:13px;color:#26215C;line-height:1.7}
+
+  .footer-slide{background:#042C53;justify-content:center;align-items:center;text-align:center;padding:56px 40px;min-height:300px}
+  .footer-slide h3{font-size:24px;font-weight:600;color:#fff;margin-bottom:10px}
+  .footer-slide p{font-size:13px;color:#85B7EB}
+
+  .tag-rec{background:#378ADD;color:#fff;font-size:10px;font-weight:700;padding:2px 7px;border-radius:4px;text-transform:uppercase;margin-left:5px;vertical-align:middle}
+  .meka-tag{background:#7F77DD;color:#fff;font-size:10px;font-weight:700;padding:2px 7px;border-radius:4px;text-transform:uppercase;margin-left:5px;vertical-align:middle}
+
+  .disclaimer{max-width:960px;margin:0 auto 32px;padding:0 16px}
+  .disclaimer-box{background:#fff;border-radius:12px;border:1px solid #e0e0e0;padding:28px 36px;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+  .disclaimer-box .dtitle{font-size:13px;font-weight:700;color:#3C3489;text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px;border-bottom:1px solid #e8e4f8;padding-bottom:8px}
+  .disclaimer-box p{font-size:12px;color:#555;line-height:1.8;margin-bottom:8px}
+  .disclaimer-box p:last-child{margin-bottom:0}
+  .disclaimer-box strong{color:#333;font-weight:600}
+</style>
+</head>
+<body>
+
+<div class="controls no-print">
+  <span>BJungle SAS · MEKA AI · Administradora de Proyectos S.A. — Propuesta Sistema de Gestión Integral</span>
+  <button class="btn btn-print" onclick="window.print()">Imprimir / Exportar PDF</button>
+</div>
+
+<div class="deck">
+
+  <!-- SLIDE 1: COVER -->
+  <div class="slide cover">
+    <div class="tag">Propuesta técnica · presentada por BJungle SAS</div>
+    <h1>Sistema de Gestión Integral<br>Modelo Híbrido ERP + Desarrollo a Medida</h1>
+    <p>Propuesta técnica elaborada por <strong style="color:#fff">BJungle SAS</strong>, canalizada comercialmente a través de <strong style="color:#fff">MEKA AI</strong>, y dirigida a <strong style="color:#fff">Administradora de Proyectos S.A.</strong> como cliente final para el sistema de gestión del MOP.</p>
+    <div class="meta">
+      <div class="meta-item"><div class="lbl">Proveedor tecnológico</div><div class="val">BJungle SAS</div></div>
+      <div class="meta-item"><div class="lbl">Intermediario comercial</div><div class="val">MEKA AI</div></div>
+      <div class="meta-item"><div class="lbl">Cliente final</div><div class="val">Administradora de Proyectos S.A.</div></div>
+      <div class="meta-item"><div class="lbl">Inversión total (c/ fee)</div><div class="val">$207,900 – $277,200</div></div>
+    </div>
+  </div>
+  <div class="roles-bar">
+    <div class="role-item"><div class="rlbl">Proveedor tecnológico</div><div class="rval">BJungle SAS</div></div>
+    <div class="role-sep"></div>
+    <div class="role-item"><div class="rlbl">Intermediario comercial</div><div class="rval">MEKA AI</div></div>
+    <div class="role-sep"></div>
+    <div class="role-item"><div class="rlbl">Cliente final</div><div class="rval">Administradora de Proyectos S.A. (ONG)</div></div>
+    <div class="role-sep"></div>
+    <div class="role-item"><div class="rlbl">Fee MEKA AI</div><div class="rval">6–8% por componente</div></div>
+  </div>
+
+  <!-- SLIDE 2: ROLES Y RESUMEN -->
+  <div class="slide">
+    <div class="slide-header">
+      <div class="num">01 — Partes involucradas y resumen ejecutivo</div>
+      <h2>Estructura comercial y estimación de inversión</h2>
+      <p>Tres roles claramente diferenciados · Fee MEKA AI 6–8% por componente · BI excluido de este contrato</p>
+    </div>
+    <div class="slide-body">
+      <div class="roles-info">
+        <div class="role-card rc-blue">
+          <div class="rct">Proveedor tecnológico</div>
+          <div class="rcn">BJungle SAS</div>
+          <div class="rcd">Responsable del diseño, desarrollo, implementación y soporte técnico del sistema. Presenta la oferta técnica y económica base.</div>
+        </div>
+        <div class="role-card rc-purple">
+          <div class="rct">Intermediario comercial</div>
+          <div class="rcn">MEKA AI</div>
+          <div class="rcd">Gestión comercial, estructuración de la propuesta y acompañamiento al cliente. Percibe fee del 6–8% por componente. El módulo BI es responsabilidad exclusiva de MEKA AI en contrato separado.</div>
+        </div>
+        <div class="role-card rc-teal">
+          <div class="rct">Cliente final</div>
+          <div class="rcn">Administradora de Proyectos S.A.</div>
+          <div class="rcd">ONG contratante del sistema de gestión integral. Recibe los entregables y valida los criterios de aceptación por fase.</div>
+        </div>
+      </div>
+      <div class="kpi-grid">
+        <div class="kpi"><div class="k-val">$243k</div><div class="k-lbl">Inversión total punto medio (con fee)</div></div>
+        <div class="kpi"><div class="k-val">6–8%</div><div class="k-lbl">Referral fee MEKA AI por componente</div></div>
+        <div class="kpi"><div class="k-val">16 m</div><div class="k-lbl">Duración total — 4 fases</div></div>
+        <div class="kpi"><div class="k-val">BI aparte</div><div class="k-lbl">Módulo BI gestionado por MEKA AI en contrato independiente</div></div>
+      </div>
+      <table>
+        <thead><tr><th>Escenario</th><th>Costo base BJungle</th><th>Fee MEKA 6%</th><th>Fee MEKA 8%</th><th class="r">Total cliente</th></tr></thead>
+        <tbody>
+          <tr><td><span class="pill p-green">Conservador</span></td><td>$107,000–$135,000</td><td>$6,420–$8,100</td><td>$8,560–$10,800</td><td class="r">$113,420–$145,800</td></tr>
+          <tr><td><span class="pill p-blue">Realista</span></td><td>$180,000–$237,000</td><td>$10,800–$14,220</td><td>$14,400–$18,960</td><td class="r">$190,800–$255,960</td></tr>
+          <tr><td><span class="pill p-amber">Ambicioso</span></td><td>$283,000–$385,000</td><td>$16,980–$23,100</td><td>$22,640–$30,800</td><td class="r">$305,640–$415,800</td></tr>
+        </tbody>
+      </table>
+      <div class="meka-box" style="margin-top:12px">
+        <p><strong>Nota:</strong> El módulo de Business Intelligence (SIVA) no está incluido en esta propuesta. Será gestionado directamente por <strong>MEKA AI</strong> bajo un contrato de servicios independiente con Administradora de Proyectos S.A.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 3: BENCHMARK -->
+  <div class="slide">
+    <div class="slide-header">
+      <div class="num">02 — Benchmark de herramientas</div>
+      <h2>Top 3 soluciones disponibles en el mercado</h2>
+      <p>Evaluadas frente a los 8 módulos del alcance BJungle SAS (BI excluido)</p>
+    </div>
+    <div class="slide-body">
+      <div class="bench-grid">
+        <div class="bench-card best">
+          <div class="bench-head">
+            <div class="bname">Odoo Community <span class="tag-rec">Recomendado</span></div>
+            <div class="bdesc">ERP open-source modular, autohospedable</div>
+            <div class="bprice">$0 – $26/usuario/mes</div>
+          </div>
+          <div class="bench-body">
+            <div class="bench-row"><span>Tesorería multi-moneda</span><span class="dot-g"></span></div>
+            <div class="bench-row"><span>Adquisiciones LPI/LPN/LL</span><span class="dot-g"></span></div>
+            <div class="bench-row"><span>Capital Humano / Nómina</span><span class="dot-g"></span></div>
+            <div class="bench-row"><span>Activos Fijos</span><span class="dot-g"></span></div>
+            <div class="bench-row"><span>PMO / Proyectos</span><span class="dot-g"></span></div>
+            <div class="bench-row"><span>PIVA / Pagos trad.</span><span class="dot-y"></span></div>
+            <div class="bench-row"><span>MGAS / Salvaguardas</span><span class="dot-y"></span></div>
+            <div class="bench-score"><div class="slbl"><span>Cobertura alcance</span><span>78%</span></div><div class="sbar"><div class="sfill" style="width:78%;background:#378ADD"></div></div></div>
+          </div>
+        </div>
+        <div class="bench-card">
+          <div class="bench-head">
+            <div class="bname">ERPNext / Frappe</div>
+            <div class="bdesc">ERP open-source, sector público y ONGs</div>
+            <div class="bprice">$0 (self-hosted) / ~$10/usr/mes</div>
+          </div>
+          <div class="bench-body">
+            <div class="bench-row"><span>Tesorería multi-moneda</span><span class="dot-g"></span></div>
+            <div class="bench-row"><span>Adquisiciones</span><span class="dot-g"></span></div>
+            <div class="bench-row"><span>Capital Humano / Nómina</span><span class="dot-g"></span></div>
+            <div class="bench-row"><span>Activos Fijos</span><span class="dot-g"></span></div>
+            <div class="bench-row"><span>PMO / Proyectos</span><span class="dot-g"></span></div>
+            <div class="bench-row"><span>PIVA / Pagos trad.</span><span class="dot-y"></span></div>
+            <div class="bench-row"><span>MGAS / Salvaguardas</span><span class="dot-y"></span></div>
+            <div class="bench-score"><div class="slbl"><span>Cobertura alcance</span><span>72%</span></div><div class="sbar"><div class="sfill" style="width:72%;background:#639922"></div></div></div>
+          </div>
+        </div>
+        <div class="bench-card">
+          <div class="bench-head">
+            <div class="bname">Monday.com + integraciones</div>
+            <div class="bdesc">Gestión de trabajo flexible, solo cloud</div>
+            <div class="bprice">$9 – $19/usuario/mes</div>
+          </div>
+          <div class="bench-body">
+            <div class="bench-row"><span>Tesorería multi-moneda</span><span class="dot-r"></span></div>
+            <div class="bench-row"><span>Adquisiciones</span><span class="dot-y"></span></div>
+            <div class="bench-row"><span>Capital Humano / Nómina</span><span class="dot-r"></span></div>
+            <div class="bench-row"><span>Activos Fijos</span><span class="dot-r"></span></div>
+            <div class="bench-row"><span>PMO / Proyectos</span><span class="dot-g"></span></div>
+            <div class="bench-row"><span>PIVA / Pagos trad.</span><span class="dot-y"></span></div>
+            <div class="bench-row"><span>MGAS / Salvaguardas</span><span class="dot-y"></span></div>
+            <div class="bench-score"><div class="slbl"><span>Cobertura alcance</span><span>48%</span></div><div class="sbar"><div class="sfill" style="width:48%;background:#EF9F27"></div></div></div>
+          </div>
+        </div>
+      </div>
+      <div style="display:flex;gap:18px;margin-top:12px;font-size:12px;color:#666;flex-wrap:wrap">
+        <span style="display:flex;align-items:center;gap:5px"><span class="dot-g"></span>Cubierto nativamente</span>
+        <span style="display:flex;align-items:center;gap:5px"><span class="dot-y"></span>Parcialmente / configuración</span>
+        <span style="display:flex;align-items:center;gap:5px"><span class="dot-r"></span>No cubierto</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 4: JUSTIFICACIÓN -->
+  <div class="slide">
+    <div class="slide-header">
+      <div class="num">03 — Análisis de desarrollo a medida</div>
+      <h2>¿Qué conviene desarrollar y qué no?</h2>
+      <p>Alcance BJungle SAS · módulo BI excluido (contrato independiente MEKA AI)</p>
+    </div>
+    <div class="slide-body">
+      <table>
+        <thead><tr><th>Módulo</th><th>Unicidad</th><th>Complejidad</th><th>Recomendación</th><th>Responsable</th></tr></thead>
+        <tbody>
+          <tr><td>Pagos Tradicionales (PIVA)</td><td><span class="pill p-red">Muy alta</span></td><td>Alta</td><td><span class="pill p-red">Desarrollar a medida</span></td><td><span class="pill p-blue">BJungle SAS</span></td></tr>
+          <tr><td>Cumplimiento MGAS / Salvaguardas</td><td><span class="pill p-red">Muy alta</span></td><td>Media-alta</td><td><span class="pill p-red">Desarrollar a medida</span></td><td><span class="pill p-blue">BJungle SAS</span></td></tr>
+          <tr><td>PMO / Control de Proyectos</td><td><span class="pill p-amber">Media</span></td><td>Media</td><td><span class="pill p-red">Desarrollar a medida</span></td><td><span class="pill p-blue">BJungle SAS</span></td></tr>
+          <tr><td>Gobernanza / Actas</td><td><span class="pill p-amber">Media</span></td><td>Media</td><td><span class="pill p-blue">Extender ERP</span></td><td><span class="pill p-blue">BJungle SAS</span></td></tr>
+          <tr><td>Capital Humano (méritos + techos)</td><td><span class="pill p-amber">Media</span></td><td>Media</td><td><span class="pill p-blue">Extender ERP</span></td><td><span class="pill p-blue">BJungle SAS</span></td></tr>
+          <tr><td>Adquisiciones (LPI/LPN/LL)</td><td><span class="pill p-amber">Media</span></td><td>Media-alta</td><td><span class="pill p-blue">Extender ERP</span></td><td><span class="pill p-blue">BJungle SAS</span></td></tr>
+          <tr><td>Activos Fijos y Gastos Op.</td><td><span class="pill p-gray">Baja</span></td><td>Baja</td><td><span class="pill p-blue">Extender ERP</span></td><td><span class="pill p-blue">BJungle SAS</span></td></tr>
+          <tr><td>Tesorería / ERP Financiero</td><td><span class="pill p-gray">Baja</span></td><td>Muy alta</td><td><span class="pill p-green">Solución existente</span></td><td><span class="pill p-blue">BJungle SAS</span></td></tr>
+          <tr class="meka-scope"><td>Business Intelligence (SIVA)</td><td><span class="pill p-purple">Excluido</span></td><td>Media</td><td><span class="pill p-purple">Contrato independiente</span></td><td><span class="pill p-purple">MEKA AI</span></td></tr>
+        </tbody>
+      </table>
+      <div class="rec-box">
+        <p><strong>Alcance BJungle SAS:</strong> 8 módulos — 3 desarrollados a medida (PIVA, MGAS, PMO) + 4 extensiones ERP + 1 solución existente configurada. El módulo BI (SIVA) queda fuera de este contrato y será entregado por MEKA AI de forma independiente.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 5: DESGLOSE CON FEE 6–8% SIN BI -->
+  <div class="slide">
+    <div class="slide-header">
+      <div class="num">04 — Desglose por componente</div>
+      <h2>Estimación detallada — BJungle SAS con fee MEKA AI (6–8%)</h2>
+      <p>Escenario realista · sin módulo BI · fee variable 6% mínimo – 8% máximo por componente</p>
+    </div>
+    <div class="slide-body">
+      <table>
+        <thead><tr><th>Componente</th><th>Tipo</th><th class="r">Costo base</th><th class="r">Fee 6%</th><th class="r">Fee 8%</th><th class="r">Total cliente</th></tr></thead>
+        <tbody>
+          <tr><td colspan="6" class="section-row">ERP base y configuración</td></tr>
+          <tr><td>Odoo Community — setup</td><td><span class="pill p-green">ERP base</span></td><td class="r">$14,400–$18,000</td><td class="r">$864–$1,080</td><td class="r">$1,152–$1,440</td><td class="r">$15,264–$19,440</td></tr>
+          <tr><td>Módulo Tesorería / Financiero</td><td><span class="pill p-green">Config ERP</span></td><td class="r">$7,200–$9,000</td><td class="r">$432–$540</td><td class="r">$576–$720</td><td class="r">$7,632–$9,720</td></tr>
+          <tr><td colspan="6" class="section-row">Extensiones ERP</td></tr>
+          <tr><td>Módulo Adquisiciones</td><td><span class="pill p-blue">Extensión ERP</span></td><td class="r">$13,440–$17,280</td><td class="r">$806–$1,037</td><td class="r">$1,075–$1,382</td><td class="r">$14,246–$18,662</td></tr>
+          <tr><td>Módulo Capital Humano</td><td><span class="pill p-blue">Extensión ERP</span></td><td class="r">$9,000–$11,700</td><td class="r">$540–$702</td><td class="r">$720–$936</td><td class="r">$9,540–$12,636</td></tr>
+          <tr><td>Módulo Activos Fijos</td><td><span class="pill p-blue">Extensión ERP</span></td><td class="r">$4,800–$6,400</td><td class="r">$288–$384</td><td class="r">$384–$512</td><td class="r">$5,088–$6,912</td></tr>
+          <tr><td>Módulo Gobernanza / Actas</td><td><span class="pill p-blue">Extensión ERP</span></td><td class="r">$7,200–$9,000</td><td class="r">$432–$540</td><td class="r">$576–$720</td><td class="r">$7,632–$9,720</td></tr>
+          <tr><td colspan="6" class="section-row">Desarrollo a medida (módulos únicos)</td></tr>
+          <tr><td>PIVA — Pagos Tradicionales</td><td><span class="pill p-red">Custom</span></td><td class="r">$20,800–$27,040</td><td class="r">$1,248–$1,622</td><td class="r">$1,664–$2,163</td><td class="r">$22,048–$29,203</td></tr>
+          <tr><td>MGAS / Salvaguardas</td><td><span class="pill p-red">Custom</span></td><td class="r">$18,720–$23,920</td><td class="r">$1,123–$1,435</td><td class="r">$1,498–$1,914</td><td class="r">$19,843–$25,834</td></tr>
+          <tr><td>PMO / Control de Proyectos</td><td><span class="pill p-red">Custom</span></td><td class="r">$19,760–$24,960</td><td class="r">$1,186–$1,498</td><td class="r">$1,581–$1,997</td><td class="r">$20,946–$26,957</td></tr>
+          <tr><td colspan="6" class="section-row">Gestión y operación</td></tr>
+          <tr><td>Integración, pruebas y QA</td><td><span class="pill p-amber">Transversal</span></td><td class="r">$12,800–$16,000</td><td class="r">$768–$960</td><td class="r">$1,024–$1,280</td><td class="r">$13,568–$17,280</td></tr>
+          <tr><td>Gestión de proyecto (PM)</td><td><span class="pill p-amber">Gestión</span></td><td class="r">$26,400–$33,000</td><td class="r">$1,584–$1,980</td><td class="r">$2,112–$2,640</td><td class="r">$27,984–$35,640</td></tr>
+          <tr><td>Infraestructura cloud</td><td><span class="pill p-gray">Infra</span></td><td class="r">$6,400–$9,600</td><td class="r">$384–$576</td><td class="r">$512–$768</td><td class="r">$6,784–$10,368</td></tr>
+          <tr><td>Capacitación y documentación</td><td><span class="pill p-amber">Lanzamiento</span></td><td class="r">$4,800–$6,400</td><td class="r">$288–$384</td><td class="r">$384–$512</td><td class="r">$5,088–$6,912</td></tr>
+          <tr class="meka-scope"><td>BI / SIVA</td><td><span class="pill p-purple">Excluido</span></td><td class="r" colspan="3">— Contrato independiente MEKA AI —</td><td class="r">No aplica</td></tr>
+          <tr class="sub-row"><td>Subtotal sin contingencia</td><td></td><td class="r">$164,720–$211,300</td><td class="r">$9,883–$12,738</td><td class="r">$13,258–$16,984</td><td class="r">$174,603–$228,284</td></tr>
+          <tr class="sub-row"><td>+ Contingencia 15%</td><td></td><td class="r">$24,708–$31,695</td><td class="r">$1,483–$1,902</td><td class="r">$1,977–$2,536</td><td class="r">$26,191–$34,231</td></tr>
+          <tr class="meka-row"><td>Total fee MEKA AI (6–8%)</td><td></td><td class="r">—</td><td class="r">$11,366–$14,640</td><td class="r">$15,235–$19,520</td><td class="r">$11,366–$19,520</td></tr>
+          <tr class="grand-row"><td>Total con contingencia + fee</td><td></td><td class="r">$189,428–$242,995</td><td class="r">+$11,366</td><td class="r">+$19,520</td><td class="r">$200,794–$262,515</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- SLIDE 6: HOJA DE RUTA -->
+  <div class="slide">
+    <div class="slide-header">
+      <div class="num">05 — Hoja de ruta</div>
+      <h2>Plan de ejecución en 4 fases — BJungle SAS</h2>
+      <p>14 meses · sin fase BI · fee MEKA AI 6–8% incluido en totales</p>
+    </div>
+    <div class="slide-body">
+      <div class="timeline">
+        <div class="tl-bar">
+          <div class="tl1 tl-seg"></div><div class="tl2 tl-seg"></div>
+          <div class="tl3 tl-seg"></div><div class="tl4 tl-seg"></div>
+        </div>
+        <div class="tl-labels"><span>Mes 0</span><span>Mes 4</span><span>Mes 8</span><span>Mes 12</span><span>Mes 14</span></div>
+        <div class="tl-legend">
+          <div class="tl-legend-item"><div class="tl-dot" style="background:#378ADD"></div>Fase 1 — Núcleo base</div>
+          <div class="tl-legend-item"><div class="tl-dot" style="background:#639922"></div>Fase 2 — Habilitadores</div>
+          <div class="tl-legend-item"><div class="tl-dot" style="background:#E24B4A"></div>Fase 3 — Módulos únicos</div>
+          <div class="tl-legend-item"><div class="tl-dot" style="background:#7F77DD"></div>Fase 4 — Integración y cierre</div>
+          <div class="tl-legend-item"><div class="tl-dot" style="background:#1D9E75;border:1px dashed #0F6E56"></div>BI — MEKA AI (paralelo, contrato independiente)</div>
+        </div>
+      </div>
+      <div class="phase-grid" style="margin-top:14px">
+        <div class="phase-card ph1c">
+          <div class="pname">Fase 1 — Núcleo base</div>
+          <div class="pmeta">Meses 1–4 · 2 devs + 1 PM · BJungle SAS</div>
+          <div class="pcost">Base: $48,000 – $62,000</div>
+          <div class="pmeka">Fee MEKA AI (6–8%): $2,880 – $4,960 <span class="meka-tag">6–8%</span></div>
+          <div class="ptotal">Total cliente: $50,880 – $66,960</div>
+          <ul>
+            <li>Odoo instalado y configurado</li>
+            <li>Tesorería multi-moneda activa</li>
+            <li>Módulo de actas y gobernanza</li>
+            <li>Infraestructura cloud lista</li>
+          </ul>
+        </div>
+        <div class="phase-card ph2c">
+          <div class="pname">Fase 2 — Módulos habilitadores</div>
+          <div class="pmeta">Meses 5–8 · 3 devs + PM + consultor · BJungle SAS</div>
+          <div class="pcost">Base: $52,000 – $68,000</div>
+          <div class="pmeka">Fee MEKA AI (6–8%): $3,120 – $5,440 <span class="meka-tag">6–8%</span></div>
+          <div class="ptotal">Total cliente: $55,120 – $73,440</div>
+          <ul>
+            <li>Adquisiciones LPI/LPN/LL</li>
+            <li>Capital Humano y activos fijos</li>
+            <li>MVP PIVA zona piloto</li>
+          </ul>
+        </div>
+        <div class="phase-card ph3c">
+          <div class="pname">Fase 3 — Módulos únicos a medida</div>
+          <div class="pmeta">Meses 9–12 · 3 devs senior + PM + QA · BJungle SAS</div>
+          <div class="pcost">Base: $68,000 – $88,000</div>
+          <div class="pmeka">Fee MEKA AI (6–8%): $4,080 – $7,040 <span class="meka-tag">6–8%</span></div>
+          <div class="ptotal">Total cliente: $72,080 – $95,040</div>
+          <ul>
+            <li>PIVA completo todas las zonas</li>
+            <li>MGAS / Salvaguardas / PQR</li>
+            <li>PMO con KPIs de deforestación</li>
+          </ul>
+        </div>
+        <div class="phase-card ph4c">
+          <div class="pname">Fase 4 — Integración y cierre</div>
+          <div class="pmeta">Meses 13–14 · 2 devs + PM · BJungle SAS</div>
+          <div class="pcost">Base: $21,428 – $24,995</div>
+          <div class="pmeka">Fee MEKA AI (6–8%): $1,286 – $2,000 <span class="meka-tag">6–8%</span></div>
+          <div class="ptotal">Total cliente: $22,714 – $26,995</div>
+          <ul>
+            <li>Pruebas de integración cross-módulo</li>
+            <li>Capacitación todos los perfiles</li>
+            <li>Documentación técnica y funcional</li>
+            <li>Handoff y plan de mantenimiento</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 7: HITOS -->
+  <div class="slide">
+    <div class="slide-header">
+      <div class="num">06 — Cronograma de hitos</div>
+      <h2>Entregables verificables por fase</h2>
+      <p>BJungle SAS · Administradora de Proyectos S.A. como cliente validador</p>
+    </div>
+    <div class="slide-body">
+      <table>
+        <thead><tr><th>Mes</th><th>Hito</th><th>Criterio de aceptación</th></tr></thead>
+        <tbody>
+          <tr><td colspan="3" class="ms-phase" style="background:#E6F1FB;color:#0C447C">FASE 1 — Núcleo base · Total cliente: $50,880 – $66,960</td></tr>
+          <tr><td>Mes 1</td><td>Kickoff y levantamiento funcional</td><td>Procesos AS-IS documentados con cliente</td></tr>
+          <tr><td>Mes 2</td><td>Ambiente de desarrollo listo</td><td>Odoo instalado, módulos base activos</td></tr>
+          <tr><td>Mes 3</td><td>UAT Fase 1</td><td>Aprobación Administradora de Proyectos S.A.</td></tr>
+          <tr><td>Mes 4</td><td>Go-live Fase 1</td><td>Tesorería y gobernanza en producción</td></tr>
+          <tr><td colspan="3" class="ms-phase" style="background:#EAF3DE;color:#27500A">FASE 2 — Módulos habilitadores · Total cliente: $55,120 – $73,440</td></tr>
+          <tr><td>Mes 6</td><td>Adquisiciones + RRHH en staging</td><td>Licitación end-to-end procesada</td></tr>
+          <tr><td>Mes 7</td><td>MVP PIVA piloto</td><td>1 pago tradicional procesado</td></tr>
+          <tr><td>Mes 8</td><td>Go-live Fase 2</td><td>PAA digital operativo</td></tr>
+          <tr><td colspan="3" class="ms-phase" style="background:#FCEBEB;color:#791F1F">FASE 3 — Módulos únicos · Total cliente: $72,080 – $95,040</td></tr>
+          <tr><td>Mes 10</td><td>PIVA + MGAS en staging</td><td>PQR trazado y reporte MGAS generado</td></tr>
+          <tr><td>Mes 11</td><td>PMO en staging</td><td>KPI deforestación calculado con datos reales</td></tr>
+          <tr><td>Mes 12</td><td>Go-live Fase 3</td><td>3 módulos custom en producción</td></tr>
+          <tr><td colspan="3" class="ms-phase" style="background:#EEEDFE;color:#3C3489">FASE 4 — Integración y cierre · Total cliente: $22,714 – $26,995</td></tr>
+          <tr><td>Mes 13</td><td>Pruebas de integración y carga</td><td>Stress test y roles/permisos validados</td></tr>
+          <tr><td>Mes 14</td><td>Go-live sistema completo + handoff</td><td>100% usuarios capacitados, documentación entregada</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- SLIDE 8: RIESGOS -->
+  <div class="slide">
+    <div class="slide-header">
+      <div class="num">07 — Riesgos y recomendaciones</div>
+      <h2>Gestión de riesgos del proyecto</h2>
+      <p>BJungle SAS como ejecutor técnico · MEKA AI como garante comercial · Administradora de Proyectos S.A. como validador</p>
+    </div>
+    <div class="slide-body">
+      <table>
+        <thead><tr><th>Nivel</th><th>Riesgo</th><th>Mitigación</th></tr></thead>
+        <tbody>
+          <tr><td><span class="risk-badge rb-h">Alto</span></td><td>Rotación del equipo BJungle SAS en fases 2–3</td><td>Contratos por fase + documentación técnica continua desde mes 1</td></tr>
+          <tr><td><span class="risk-badge rb-h">Alto</span></td><td>Cambios de alcance no controlados (scope creep)</td><td>Change request formal con aprobación de Administradora de Proyectos S.A. y MEKA AI</td></tr>
+          <tr><td><span class="risk-badge rb-m">Medio</span></td><td>Baja adopción de usuarios territoriales</td><td>Piloto temprano en fase 2 + UX simplificado para zonas rurales</td></tr>
+          <tr><td><span class="risk-badge rb-m">Medio</span></td><td>Conectividad limitada en zonas PIVA</td><td>Modo offline en fase 3 si presupuesto lo permite; contingencia $15–25k adicionales</td></tr>
+          <tr><td><span class="risk-badge rb-m">Medio</span></td><td>Desalineación BI (MEKA AI) con módulos BJungle</td><td>Definir APIs y estructura de datos compartida desde fase 1 entre ambos proveedores</td></tr>
+          <tr><td><span class="risk-badge rb-l">Bajo</span></td><td>Cambios regulatorios durante el desarrollo</td><td>40 horas de buffer reservadas en fase 4 para ajustes normativos</td></tr>
+        </tbody>
+      </table>
+      <div class="rec-box">
+        <p><strong>Recomendaciones clave:</strong> (1) Formalizar desde el inicio el acuerdo de interfaces entre BJungle SAS y MEKA AI para el módulo BI. (2) PM dedicado BJungle SAS desde el día 0. (3) MEKA AI actúa como punto de contacto único con Administradora de Proyectos S.A. para cambios de alcance.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 9: CIERRE -->
+  <div class="slide footer-slide">
+    <h3>BJungle SAS · MEKA AI · Administradora de Proyectos S.A.</h3>
+    <p style="font-size:14px;margin-bottom:4px">Inversión total al cliente: <strong style="color:#fff">$200,794 – $262,515 USD · 14 meses</strong></p>
+    <p style="margin-bottom:4px">Fee MEKA AI 6–8% por componente · BI en contrato independiente</p>
+    <p>Modelo híbrido: Odoo Community + 3 módulos únicos a medida (PIVA, MGAS, PMO)</p>
+    <div style="margin-top:24px;display:flex;gap:18px;justify-content:center;flex-wrap:wrap">
+      <div style="text-align:center"><div style="font-size:15px;font-weight:700;color:#fff">$50,880–$66,960</div><div style="font-size:11px;color:#85B7EB;margin-top:3px">Fase 1 · Meses 1–4</div></div>
+      <div style="text-align:center"><div style="font-size:15px;font-weight:700;color:#fff">$55,120–$73,440</div><div style="font-size:11px;color:#85B7EB;margin-top:3px">Fase 2 · Meses 5–8</div></div>
+      <div style="text-align:center"><div style="font-size:15px;font-weight:700;color:#fff">$72,080–$95,040</div><div style="font-size:11px;color:#85B7EB;margin-top:3px">Fase 3 · Meses 9–12</div></div>
+      <div style="text-align:center"><div style="font-size:15px;font-weight:700;color:#fff">$22,714–$26,995</div><div style="font-size:11px;color:#85B7EB;margin-top:3px">Fase 4 · Meses 13–14</div></div>
+    </div>
+    <div style="margin-top:20px;background:rgba(255,255,255,.08);border-radius:10px;padding:10px 24px;display:inline-block">
+      <p style="font-size:12px;color:#AFA9EC">Fee MEKA AI acumulado (6–8%): <strong style="color:#fff">$11,366 – $19,520 USD</strong></p>
+    </div>
+  </div>
+
+</div>
+
+<!-- DISCLAIMER -->
+<div class="disclaimer">
+  <div class="disclaimer-box">
+    <div class="dtitle">Nota legal — Disclaimer de comisión referral MEKA AI</div>
+    <p><strong>Partes involucradas:</strong> La presente propuesta ha sido elaborada técnica y económicamente por <strong>BJungle SAS</strong> en su calidad de proveedor tecnológico, canalizada comercialmente a través de <strong>MEKA AI</strong> como intermediario comercial, y dirigida a <strong>Administradora de Proyectos S.A.</strong> como cliente final y ONG contratante.</p>
+    <p><strong>Naturaleza del fee:</strong> El referral fee de MEKA AI corresponde a una comisión de intermediación comercial comprendida entre el <strong>6% y el 8%</strong> del costo base de cada componente del proyecto elaborado por BJungle SAS. Este porcentaje remunera los servicios de identificación de oportunidades, estructuración técnica de la propuesta, gestión comercial y acompañamiento en el proceso de contratación. El módulo de Business Intelligence (SIVA) se excluye expresamente del alcance de BJungle SAS y del cálculo del presente fee, al ser objeto de un contrato de servicios independiente entre MEKA AI y Administradora de Proyectos S.A.</p>
+    <p><strong>Aplicación por componente:</strong> El fee se calcula de forma independiente sobre el costo base de cada rubro antes de aplicar la contingencia. El porcentaje exacto dentro del rango 6–8% se acuerda por escrito entre MEKA AI y BJungle SAS previo al inicio de cada fase, y quedará consignado en el respectivo contrato o acuerdo comercial bilateral.</p>
+    <p><strong>Condiciones de pago:</strong> El fee correspondiente a cada fase se liquida a la certificación formal de cada fase por parte del cliente final. En caso de cancelación o suspensión del proyecto una vez iniciada una fase, el fee proporcional a los servicios es reconsiderable.</p>
+    <p><strong>Transparencia e independencia:</strong> MEKA AI actúa exclusivamente en calidad de intermediario comercial y no asume responsabilidad directa sobre la ejecución técnica del proyecto, los plazos de entrega ni la calidad de los entregables a cargo de BJungle SAS. Las estimaciones presentadas en este documento tienen carácter referencial y pueden variar según el alcance definitivo acordado entre las partes.</p>
+    <p><strong>Confidencialidad:</strong> La información contenida en esta propuesta es de carácter confidencial y está dirigida exclusivamente a los destinatarios autorizados. Queda prohibida su reproducción, distribución o divulgación parcial o total sin el consentimiento previo y por escrito de MEKA AI y BJungle SAS.</p>
+    <p style="color:#999;font-size:11px;margin-top:10px">Documento generado con fines de estimación comercial. Marzo 2026. BJungle SAS — MEKA AI.</p>
+  </div>
+</div>
+
+</body>
+</html>
